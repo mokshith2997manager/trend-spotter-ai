@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { RefreshCw, Sparkles, TrendingUp, Flame, Rocket } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { initAds, showBottomBanner } from '@/admob';
 
 type FilterType = 'all' | 'hot' | 'rising' | 'new';
 
@@ -43,6 +44,15 @@ export default function Home() {
       supabase.removeChannel(channel);
     };
   }, [filter]);
+
+  // Initialize AdMob ads
+  useEffect(() => {
+    initAds().then(() => {
+      showBottomBanner();
+    }).catch((err) => {
+      console.log('AdMob not available:', err);
+    });
+  }, []);
 
   const fetchTrends = async () => {
     let query = supabase
