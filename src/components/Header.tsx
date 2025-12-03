@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { Zap, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { XPBar } from './XPBar';
@@ -8,6 +9,8 @@ interface HeaderProps {
 }
 
 export function Header({ xp = 0, showXP = false }: HeaderProps) {
+  const navigate = useNavigate();
+
   return (
     <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-lg border-b border-border">
       <div className="flex items-center justify-between h-14 px-4 max-w-lg mx-auto">
@@ -26,7 +29,12 @@ export function Header({ xp = 0, showXP = false }: HeaderProps) {
           </div>
         )}
 
-        <Button variant="ghost" size="icon" className="relative">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="relative"
+          onClick={() => navigate('/notifications')}
+        >
           <Bell className="w-5 h-5" />
           <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full" />
         </Button>

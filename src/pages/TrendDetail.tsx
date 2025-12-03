@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { Trend } from '@/types/database';
 import { ScoreChart } from '@/components/ScoreChart';
+import { ReelsReference, ViralReel } from '@/components/ReelsReference';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,14 +18,58 @@ import {
   Copy, 
   TrendingUp,
   Flame,
-  Heart
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
+// Mock reels related to trends - in production would come from backend
+const getTrendReels = (trendTitle: string): ViralReel[] => {
+  const baseReels: ViralReel[] = [
+    {
+      id: `${trendTitle}-1`,
+      platform: 'instagram',
+      title: `How I Went Viral with ${trendTitle.slice(0, 20)}...`,
+      creator: '@contentcreator',
+      thumbnail: 'https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=400&q=80',
+      link: 'https://instagram.com/reel/example',
+      views: '1.2M',
+      hookAnalysis: 'Strong pattern interrupt in first second with unexpected visual',
+      pacingNotes: 'Fast cuts synced to trending audio, builds to satisfying conclusion',
+      trendUsed: trendTitle.slice(0, 30),
+      audioTip: 'Uses trending sound with recognizable hook',
+      recreationTips: [
+        'Mirror the opening hook structure',
+        'Match the energy level throughout',
+        'Use similar transition timing',
+        'End with clear call-to-action'
+      ]
+    },
+    {
+      id: `${trendTitle}-2`,
+      platform: 'youtube',
+      title: `${trendTitle} - The TRUTH`,
+      creator: '@viralguru',
+      thumbnail: 'https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=400&q=80',
+      link: 'https://youtube.com/shorts/example',
+      views: '3.5M',
+      hookAnalysis: 'Opens with bold claim that creates curiosity gap',
+      pacingNotes: 'Builds tension with quick reveals, uses text overlays for emphasis',
+      trendUsed: 'Educational content',
+      audioTip: 'Voice-over with subtle suspense music',
+      recreationTips: [
+        'Lead with your strongest point',
+        'Use numbered reveals for structure',
+        'Keep each point under 5 seconds',
+        'Deliver unexpected twist at end'
+      ]
+    }
+  ];
+  return baseReels;
+};
 
 export default function TrendDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { user, profile, addXP } = useAuth();
+  const { user, addXP } = useAuth();
   const { toast } = useToast();
   
   const [trend, setTrend] = useState<Trend | null>(null);
@@ -173,6 +218,8 @@ export default function TrendDetail() {
     return 'text-red-400';
   };
 
+  const trendReels = getTrendReels(trend.title);
+
   return (
     <div className="min-h-screen bg-background pb-8">
       {/* Header */}
@@ -212,7 +259,7 @@ export default function TrendDetail() {
             </div>
 
             {/* Score History Chart */}
-            {trend.score_history && trend.score_history.length > 0 && (
+            {trend.score_history && Array.isArray(trend.score_history) && trend.score_history.length > 0 && (
               <ScoreChart history={trend.score_history} className="mt-4" />
             )}
           </CardContent>
@@ -256,6 +303,19 @@ export default function TrendDetail() {
             </CardContent>
           </Card>
         )}
+
+        {/* Reels Inspiration */}
+        <Card className="bg-card border-border/50">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Viral Reels Reference</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ReelsReference 
+              reels={trendReels} 
+              title=""
+            />
+          </CardContent>
+        </Card>
 
         {/* Social Captions */}
         {trend.examples && trend.examples.length > 0 && (
