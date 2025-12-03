@@ -82,6 +82,63 @@ const defaultReels: ViralReel[] = [
       'Use lighting transitions for drama',
       'Add satisfying ASMR sounds'
     ]
+  },
+  {
+    id: '4',
+    platform: 'instagram',
+    title: 'What I Eat in a Day for Clear Skin',
+    creator: '@skincarebabe',
+    thumbnail: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400&q=80',
+    link: 'https://instagram.com/reel/example4',
+    views: '3.7M',
+    hookAnalysis: 'Starts with end result (glowing skin) then reveals the journey',
+    pacingNotes: 'Meal-by-meal format with quick transitions and calorie counts',
+    trendUsed: 'What I Eat in a Day',
+    audioTip: 'Uses upbeat trending pop song with ASMR cooking sounds',
+    recreationTips: [
+      'Show your skin results first',
+      'Include specific portions and times',
+      'Add satisfying food prep sounds',
+      'End with before/after comparison'
+    ]
+  },
+  {
+    id: '5',
+    platform: 'youtube',
+    title: 'Things That Just Make Sense',
+    creator: '@lifehackking',
+    thumbnail: 'https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=400&q=80',
+    link: 'https://youtube.com/shorts/example5',
+    views: '8.2M',
+    hookAnalysis: 'Uses satisfying/oddly satisfying format with instant dopamine hits',
+    pacingNotes: 'Rapid-fire clips, 1-2 seconds each, no breaks',
+    trendUsed: 'Compilation/Oddly Satisfying',
+    audioTip: 'Catchy trending sound with perfect timing on each clip',
+    recreationTips: [
+      'Each clip should be instantly satisfying',
+      'No filler content - pure dopamine',
+      'Sync transitions to music beats',
+      'Leave viewers wanting more'
+    ]
+  },
+  {
+    id: '6',
+    platform: 'instagram',
+    title: 'Get Ready With Me for the Grammy\'s',
+    creator: '@glammakeup',
+    thumbnail: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400&q=80',
+    link: 'https://instagram.com/reel/example6',
+    views: '4.5M',
+    hookAnalysis: 'Celebrity event hook creates FOMO and aspirational content',
+    pacingNotes: 'Step-by-step makeup application with product callouts',
+    trendUsed: 'GRWM (Get Ready With Me)',
+    audioTip: 'Voiceover with chatty storytelling tone, trending background music',
+    recreationTips: [
+      'Hook with the event/occasion first',
+      'Talk directly to camera like chatting with a friend',
+      'Show each product clearly',
+      'Include outfit reveal at the end'
+    ]
   }
 ];
 

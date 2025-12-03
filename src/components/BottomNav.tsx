@@ -3,7 +3,7 @@ import { Home, Trophy, User, Compass } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
-  { to: '/', icon: Home, label: 'Home' },
+  { to: '/home', icon: Home, label: 'Home' },
   { to: '/discover', icon: Compass, label: 'Discover' },
   { to: '/leaderboard', icon: Trophy, label: 'Leaders' },
   { to: '/profile', icon: User, label: 'Profile' },

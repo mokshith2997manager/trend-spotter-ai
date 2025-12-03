@@ -5,6 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Trend } from '@/types/database';
 import { ScoreChart } from '@/components/ScoreChart';
 import { ReelsReference, ViralReel } from '@/components/ReelsReference';
+import { HashtagDiscovery } from '@/components/HashtagDiscovery';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -345,23 +346,11 @@ export default function TrendDetail() {
           </Card>
         )}
 
-        {/* Tags */}
-        {trend.suggested_tags && trend.suggested_tags.length > 0 && (
-          <Card className="bg-card border-border/50">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base">Related Tags</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-2">
-                {trend.suggested_tags.map((tag, index) => (
-                  <Badge key={index} variant="outline" className="text-sm">
-                    #{tag}
-                  </Badge>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        )}
+        {/* Hashtag Discovery */}
+        <HashtagDiscovery 
+          trendTitle={trend.title}
+          suggestedTags={trend.suggested_tags || []}
+        />
       </main>
     </div>
   );
