@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 
 // Pages
+import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import TrendDetail from "./pages/TrendDetail";
@@ -51,7 +52,7 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
   }
   
   if (user) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/home" replace />;
   }
   
   return <>{children}</>;
@@ -60,8 +61,9 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
 function AppRoutes() {
   return (
     <Routes>
+      <Route path="/" element={<PublicRoute><Landing /></PublicRoute>} />
       <Route path="/auth" element={<PublicRoute><Auth /></PublicRoute>} />
-      <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+      <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
       <Route path="/trend/:id" element={<ProtectedRoute><TrendDetail /></ProtectedRoute>} />
       <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="/leaderboard" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />

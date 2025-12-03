@@ -64,7 +64,7 @@ export default function Onboarding() {
         title: "Interests saved!",
         description: "Your feed is now personalized"
       });
-      navigate('/');
+      navigate('/home');
     }
 
     setLoading(false);
