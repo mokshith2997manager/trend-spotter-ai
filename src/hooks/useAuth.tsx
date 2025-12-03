@@ -56,9 +56,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .select('*')
       .eq('id', userId)
       .maybeSingle();
-    
+
     if (data && !error) {
       setProfile(data as Profile);
+      initializeNotificationPreferences(userId);
+    }
+  };
+
+  const initializeNotificationPreferences = async (userId: string) => {
+    try {
+      const { data: existingPrefs } = await supabase
+        .from('notification_preferences')
+        .select('*')
+        .eq('user_id', userId)
+        .maybeSingle();
+
+      if (!existingPrefs) {
+        await supabase
+          .from('notification_preferences')
+          .insert([{
+            user_id: userId,
+            trend_alerts_enabled: true,
+            score_milestones_enabled: true,
+            new_content_enabled: true,
+            recommendations_enabled: true,
+            trend_alert_threshold: 70
+          }]);
+      }
+    } catch (error) {
+      console.error('Error initializing notification preferences:', error);
     }
   };
 

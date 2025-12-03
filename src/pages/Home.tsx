@@ -9,6 +9,7 @@ import { BottomNav } from '@/components/BottomNav';
 import { HomeCarousel } from '@/components/HomeCarousel';
 import { HypeScoreCard } from '@/components/HypeScoreCard';
 import { FloatingActionButton } from '@/components/FloatingActionButton';
+import { ViralReelsGallery } from '@/components/ViralReelsGallery';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { RefreshCw, Sparkles, TrendingUp, Flame, Rocket } from 'lucide-react';
@@ -113,12 +114,15 @@ export default function Home() {
         <HomeCarousel />
 
         {/* HYPE Score Card */}
-        <HypeScoreCard 
+        <HypeScoreCard
           score={hypeScore}
           consistency={Math.min(100, 60 + Math.floor((profile?.xp || 0) / 20))}
           engagement={Math.min(100, 70 + Math.floor((profile?.xp || 0) / 15))}
           creativity={Math.min(100, 55 + Math.floor((profile?.xp || 0) / 25))}
         />
+
+        {/* Viral Reels Gallery */}
+        <ViralReelsGallery />
 
         {/* Filter buttons */}
         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
