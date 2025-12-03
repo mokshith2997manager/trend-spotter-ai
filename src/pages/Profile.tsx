@@ -58,7 +58,31 @@ export default function Profile() {
     navigate('/auth');
   };
 
-  if (!user || !profile) return null;
+  if (!user) {
+    return null;
+  }
+
+  if (!profile) {
+    return (
+      <div className="min-h-screen bg-background pb-20">
+        <Header />
+        <main className="max-w-lg mx-auto px-4 py-4 space-y-4">
+          <Card className="bg-gradient-card border-border/50">
+            <CardContent className="p-6">
+              <div className="flex items-start gap-4">
+                <div className="w-20 h-20 rounded-full bg-muted animate-pulse" />
+                <div className="flex-1 space-y-2">
+                  <div className="h-6 w-32 bg-muted animate-pulse rounded" />
+                  <div className="h-4 w-48 bg-muted animate-pulse rounded" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </main>
+        <BottomNav />
+      </div>
+    );
+  }
 
   const getInitials = (name: string | null) => {
     if (!name) return '?';
