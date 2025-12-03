@@ -8,16 +8,13 @@ import { AuthProvider, useAuth } from "@/hooks/useAuth";
 // Pages
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
-import Landing from "./pages/Landing";
 import TrendDetail from "./pages/TrendDetail";
 import Profile from "./pages/Profile";
 import Leaderboard from "./pages/Leaderboard";
 import Onboarding from "./pages/Onboarding";
 import Discover from "./pages/Discover";
 import Notifications from "./pages/Notifications";
-import NotificationSettings from "./pages/NotificationSettings";
 import Settings from "./pages/Settings";
-import CreateReel from "./pages/CreateReel";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -63,7 +60,6 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/landing" element={<Landing />} />
       <Route path="/auth" element={<PublicRoute><Auth /></PublicRoute>} />
       <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
       <Route path="/trend/:id" element={<ProtectedRoute><TrendDetail /></ProtectedRoute>} />
@@ -72,9 +68,7 @@ function AppRoutes() {
       <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
       <Route path="/discover" element={<ProtectedRoute><Discover /></ProtectedRoute>} />
       <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
-      <Route path="/notification-settings" element={<ProtectedRoute><NotificationSettings /></ProtectedRoute>} />
       <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-      <Route path="/create-reel" element={<ProtectedRoute><CreateReel /></ProtectedRoute>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

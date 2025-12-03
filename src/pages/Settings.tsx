@@ -161,17 +161,40 @@ export default function Settings() {
               Notifications
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-0">
-            <button
-              onClick={() => navigate('/notification-settings')}
-              className="w-full flex items-center justify-between p-3 hover:bg-muted/50 rounded-lg transition-colors"
-            >
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <Bell className="w-5 h-5" />
-                <span className="font-medium">Manage Notification Settings</span>
+                <Smartphone className="w-4 h-4 text-muted-foreground" />
+                <Label htmlFor="push">Push Notifications</Label>
               </div>
-              <ChevronRight className="w-4 h-4 text-muted-foreground" />
-            </button>
+              <Switch 
+                id="push"
+                checked={pushNotifications}
+                onCheckedChange={setPushNotifications}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Mail className="w-4 h-4 text-muted-foreground" />
+                <Label htmlFor="email">Email Notifications</Label>
+              </div>
+              <Switch 
+                id="email"
+                checked={emailNotifications}
+                onCheckedChange={setEmailNotifications}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Bell className="w-4 h-4 text-muted-foreground" />
+                <Label htmlFor="trends">Trend Alerts</Label>
+              </div>
+              <Switch 
+                id="trends"
+                checked={trendAlerts}
+                onCheckedChange={setTrendAlerts}
+              />
+            </div>
           </CardContent>
         </Card>
 
