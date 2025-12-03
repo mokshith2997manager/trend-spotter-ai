@@ -6,9 +6,12 @@ import { Trend } from '@/types/database';
 import { TrendCard } from '@/components/TrendCard';
 import { Header } from '@/components/Header';
 import { BottomNav } from '@/components/BottomNav';
+import { HomeCarousel } from '@/components/HomeCarousel';
+import { HypeScoreCard } from '@/components/HypeScoreCard';
+import { FloatingActionButton } from '@/components/FloatingActionButton';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { RefreshCw, Sparkles, TrendingUp, Flame } from 'lucide-react';
+import { RefreshCw, Sparkles, TrendingUp, Flame, Rocket } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 type FilterType = 'all' | 'hot' | 'rising' | 'new';
@@ -25,7 +28,6 @@ export default function Home() {
   useEffect(() => {
     fetchTrends();
 
-    // Subscribe to real-time updates
     const channel = supabase
       .channel('trends-changes')
       .on(
@@ -94,18 +96,32 @@ export default function Home() {
     { type: 'rising', label: 'Rising', icon: <TrendingUp className="w-4 h-4" /> },
   ];
 
+  // Calculate mock HYPE score based on profile XP
+  const hypeScore = profile ? Math.min(100, Math.floor((profile.xp / 10) + 50)) : 50;
+
   if (!user) {
     navigate('/auth');
     return null;
   }
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background pb-24">
       <Header xp={profile?.xp || 0} showXP={!!profile} />
       
-      <main className="max-w-lg mx-auto px-4 py-4">
+      <main className="max-w-lg mx-auto px-4 py-4 space-y-4">
+        {/* Hero Carousel */}
+        <HomeCarousel />
+
+        {/* HYPE Score Card */}
+        <HypeScoreCard 
+          score={hypeScore}
+          consistency={Math.min(100, 60 + Math.floor((profile?.xp || 0) / 20))}
+          engagement={Math.min(100, 70 + Math.floor((profile?.xp || 0) / 15))}
+          creativity={Math.min(100, 55 + Math.floor((profile?.xp || 0) / 25))}
+        />
+
         {/* Filter buttons */}
-        <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-2">
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
           {filterButtons.map((btn) => (
             <Button
               key={btn.type}
@@ -130,10 +146,18 @@ export default function Home() {
           </Button>
         </div>
 
+        {/* Section Title */}
+        <div className="flex items-center justify-between">
+          <h2 className="font-bold text-lg">Trending Now</h2>
+          <span className="text-xs text-muted-foreground">
+            {trends.length} trends
+          </span>
+        </div>
+
         {/* Trends list */}
         {loading ? (
           <div className="space-y-4">
-            {[...Array(5)].map((_, i) => (
+            {[...Array(3)].map((_, i) => (
               <Skeleton key={i} className="h-32 rounded-xl" />
             ))}
           </div>
@@ -151,7 +175,7 @@ export default function Home() {
           </div>
         ) : (
           <div className="space-y-4">
-            {trends.map((trend) => (
+            {trends.slice(0, 5).map((trend) => (
               <TrendCard
                 key={trend.id}
                 trend={trend}
@@ -161,6 +185,13 @@ export default function Home() {
           </div>
         )}
       </main>
+
+      {/* Floating Action Button */}
+      <FloatingActionButton 
+        label="Create Hype"
+        icon={<Rocket className="w-5 h-5" />}
+        onClick={() => navigate('/discover')}
+      />
 
       <BottomNav />
     </div>
