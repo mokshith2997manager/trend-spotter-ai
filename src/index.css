@@ -8,46 +8,46 @@ All colors MUST be HSL.
 
 @layer base {
 :root {
-    --background: 230 25% 8%;
-    --foreground: 210 40% 98%;
+    --background: 200 20% 6%;
+    --foreground: 180 20% 95%;
 
-    --card: 230 20% 12%;
-    --card-foreground: 210 40% 98%;
+    --card: 200 18% 10%;
+    --card-foreground: 180 20% 95%;
 
-    --popover: 230 20% 12%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 200 18% 10%;
+    --popover-foreground: 180 20% 95%;
 
-    --primary: 280 100% 65%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 166 100% 50%;
+    --primary-foreground: 200 20% 6%;
     
-    --primary-glow: 300 100% 70%;
+    --primary-glow: 166 100% 60%;
     
-    --secondary: 180 100% 50%;
-    --secondary-foreground: 230 25% 8%;
+    --secondary: 166 80% 40%;
+    --secondary-foreground: 180 20% 95%;
 
-    --muted: 230 15% 20%;
-    --muted-foreground: 220 15% 60%;
+    --muted: 200 15% 18%;
+    --muted-foreground: 200 15% 55%;
 
-    --accent: 320 85% 60%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 166 90% 45%;
+    --accent-foreground: 200 20% 6%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 180 20% 95%;
 
-    --border: 230 15% 22%;
-    --input: 230 15% 22%;
-    --ring: 280 100% 65%;
+    --border: 200 15% 18%;
+    --input: 200 15% 18%;
+    --ring: 166 100% 50%;
 
     --radius: 1rem;
     
-    --gradient-hype: linear-gradient(135deg, hsl(280 100% 65%), hsl(320 85% 60%));
-    --gradient-score: linear-gradient(90deg, hsl(280 100% 65%), hsl(180 100% 50%));
-    --gradient-card: linear-gradient(180deg, hsl(230 20% 14%), hsl(230 20% 10%));
-    --gradient-neon: linear-gradient(135deg, hsl(280 100% 65%), hsl(180 100% 50%));
+    --gradient-hype: linear-gradient(135deg, hsl(166 100% 50%), hsl(166 80% 35%));
+    --gradient-score: linear-gradient(90deg, hsl(166 100% 50%), hsl(180 80% 40%));
+    --gradient-card: linear-gradient(180deg, hsl(200 18% 12%), hsl(200 20% 8%));
+    --gradient-neon: linear-gradient(135deg, hsl(166 100% 50%), hsl(180 100% 45%));
     
-    --shadow-glow: 0 0 40px hsl(280 100% 65% / 0.4);
-    --shadow-neon: 0 0 20px hsl(180 100% 50% / 0.3);
-    --shadow-card: 0 8px 32px hsl(230 25% 3% / 0.6);
+    --shadow-glow: 0 0 40px hsl(166 100% 50% / 0.4);
+    --shadow-neon: 0 0 20px hsl(166 100% 50% / 0.3);
+    --shadow-card: 0 8px 32px hsl(200 20% 3% / 0.6);
     
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 

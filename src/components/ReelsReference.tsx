@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Play, ExternalLink, Instagram, Youtube, Lightbulb, TrendingUp } from 'lucide-react';
+import { Play, ExternalLink, Instagram, Youtube, Lightbulb, TrendingUp, Sparkles, Loader2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface ViralReel {
   id: string;
@@ -20,10 +21,11 @@ export interface ViralReel {
   trendUsed?: string;
   audioTip?: string;
   recreationTips: string[];
+  relevanceScore?: number;
 }
 
-// Mock data - this would come from admin config/backend
-const mockReels: ViralReel[] = [
+// Default reels - AI will enhance these with relevance analysis
+const defaultReels: ViralReel[] = [
   {
     id: '1',
     platform: 'instagram',
@@ -86,10 +88,69 @@ const mockReels: ViralReel[] = [
 interface ReelsReferenceProps {
   reels?: ViralReel[];
   title?: string;
+  trendTitle?: string;
 }
 
-export function ReelsReference({ reels = mockReels, title = "Viral Reels Inspiration" }: ReelsReferenceProps) {
+export function ReelsReference({ reels = defaultReels, title = "Viral Reels Inspiration", trendTitle }: ReelsReferenceProps) {
   const [selectedReel, setSelectedReel] = useState<ViralReel | null>(null);
+  const [analyzedReels, setAnalyzedReels] = useState<ViralReel[]>(reels);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [hasAnalyzed, setHasAnalyzed] = useState(false);
+
+  useEffect(() => {
+    if (trendTitle && !hasAnalyzed) {
+      analyzeReelsWithAI();
+    }
+  }, [trendTitle]);
+
+  const analyzeReelsWithAI = async () => {
+    if (!trendTitle) return;
+    
+    setIsAnalyzing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('analyze-reels', {
+        body: {
+          reels: reels.map(r => ({
+            id: r.id,
+            title: r.title,
+            creator: r.creator,
+            platform: r.platform
+          })),
+          trendTitle
+        }
+      });
+
+      if (error) throw error;
+
+      if (data?.analyses) {
+        const enhanced = reels.map(reel => {
+          const analysis = data.analyses.find((a: any) => a.id === reel.id);
+          if (analysis) {
+            return {
+              ...reel,
+              hookAnalysis: analysis.hookAnalysis || reel.hookAnalysis,
+              pacingNotes: analysis.pacingNotes || reel.pacingNotes,
+              trendUsed: analysis.trendUsed || reel.trendUsed,
+              audioTip: analysis.audioTip || reel.audioTip,
+              recreationTips: analysis.recreationTips || reel.recreationTips,
+              relevanceScore: analysis.relevanceScore
+            };
+          }
+          return reel;
+        });
+        
+        // Sort by relevance score
+        enhanced.sort((a, b) => (b.relevanceScore || 0) - (a.relevanceScore || 0));
+        setAnalyzedReels(enhanced);
+      }
+      setHasAnalyzed(true);
+    } catch (err) {
+      console.error('Failed to analyze reels:', err);
+      setAnalyzedReels(reels);
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
 
   const PlatformIcon = ({ platform }: { platform: 'instagram' | 'youtube' }) => {
     return platform === 'instagram' 
@@ -102,14 +163,28 @@ export function ReelsReference({ reels = mockReels, title = "Viral Reels Inspira
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <h3 className="font-bold text-lg">{title}</h3>
-          <Badge variant="outline" className="text-xs">
-            <TrendingUp className="w-3 h-3 mr-1" />
-            {reels.length} reels
-          </Badge>
+          <div className="flex items-center gap-2">
+            {isAnalyzing && (
+              <Badge variant="outline" className="text-xs text-primary">
+                <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                Analyzing
+              </Badge>
+            )}
+            {hasAnalyzed && (
+              <Badge className="text-xs bg-primary/20 text-primary border-primary/30">
+                <Sparkles className="w-3 h-3 mr-1" />
+                AI Enhanced
+              </Badge>
+            )}
+            <Badge variant="outline" className="text-xs">
+              <TrendingUp className="w-3 h-3 mr-1" />
+              {analyzedReels.length} reels
+            </Badge>
+          </div>
         </div>
 
         <div className="grid gap-3">
-          {reels.map((reel, index) => (
+          {analyzedReels.map((reel, index) => (
             <motion.div
               key={reel.id}
               initial={{ opacity: 0, y: 20 }}
@@ -146,9 +221,16 @@ export function ReelsReference({ reels = mockReels, title = "Viral Reels Inspira
 
                     {/* Info */}
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-semibold text-sm line-clamp-2 mb-1">
-                        {reel.title}
-                      </h4>
+                      <div className="flex items-start justify-between">
+                        <h4 className="font-semibold text-sm line-clamp-2 mb-1">
+                          {reel.title}
+                        </h4>
+                        {reel.relevanceScore && (
+                          <Badge className="ml-2 bg-primary/20 text-primary text-[10px]">
+                            {reel.relevanceScore}%
+                          </Badge>
+                        )}
+                      </div>
                       <p className="text-xs text-muted-foreground mb-2">
                         {reel.creator}
                       </p>

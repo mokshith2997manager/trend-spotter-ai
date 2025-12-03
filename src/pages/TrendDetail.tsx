@@ -313,6 +313,7 @@ export default function TrendDetail() {
             <ReelsReference 
               reels={trendReels} 
               title=""
+              trendTitle={trend.title}
             />
           </CardContent>
         </Card>
