@@ -59,6 +59,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     
     if (data && !error) {
       setProfile(data as Profile);
+    } else if (!data && !error) {
+      // Profile doesn't exist, create one
+      const user = (await supabase.auth.getUser()).data.user;
+      const newProfile = {
+        id: userId,
+        email: user?.email || null,
+        display_name: user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'User',
+        xp: 0,
+        badges: [],
+        interests: [],
+        daily_streak: 0,
+        last_daily_reward_at: null
+      };
+      
+      const { data: created, error: createError } = await supabase
+        .from('profiles')
+        .insert(newProfile)
+        .select()
+        .single();
+      
+      if (created && !createError) {
+        setProfile(created as Profile);
+      }
     }
   };
 
