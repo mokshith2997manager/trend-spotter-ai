@@ -46,14 +46,24 @@ export default function Home() {
     };
   }, [filter]);
 
-  // Initialize AdMob ads
+    // Initialize AdMob ads (Android only)
   useEffect(() => {
-    initAds().then(() => {
-      showBottomBanner();
-    }).catch((err) => {
-      console.log('AdMob not available:', err);
-    });
+    const runAds = async () => {
+      try {
+        // Avoid running on web where AdMob plugin doesn't exist
+        const { Capacitor } = await import('@capacitor/core');
+        if (Capacitor.getPlatform() !== 'android') return;
+
+        await initAds();
+        await showBottomBanner();
+      } catch (err) {
+        console.log('AdMob not available:', err);
+      }
+    };
+
+    runAds();
   }, []);
+
 
   const fetchTrends = async () => {
     let query = supabase
