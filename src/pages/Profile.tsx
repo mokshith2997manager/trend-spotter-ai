@@ -14,23 +14,28 @@ import {
   Trophy, 
   Zap,
   Calendar,
-  Star
+  Star,
+  Play,
+  Gift
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 export default function Profile() {
-  const { user, profile, signOut } = useAuth();
+  const { user, profile, loading, signOut, addXP } = useAuth();
   const navigate = useNavigate();
   const [stats, setStats] = useState({ bets: 0, bookmarks: 0 });
+  const [watchingAd, setWatchingAd] = useState(false);
 
   useEffect(() => {
-    if (!user) {
+    if (!loading && !user) {
       navigate('/auth');
       return;
     }
-    fetchStats();
-  }, [user]);
+    if (user) {
+      fetchStats();
+    }
+  }, [user, loading]);
 
   const fetchStats = async () => {
     if (!user) return;
@@ -53,13 +58,46 @@ export default function Profile() {
     });
   };
 
+  const handleWatchAd = async () => {
+    setWatchingAd(true);
+    try {
+      const { prepareRewardedAd, showRewardedAd } = await import('@/admob');
+      await prepareRewardedAd();
+      const reward = await showRewardedAd();
+      if (reward) {
+        // Give bonus XP for watching ad
+        await addXP(25, 'watch_ad');
+      }
+    } catch (error) {
+      console.log('Ad not available in web preview');
+      // For web preview, simulate reward
+      await addXP(25, 'watch_ad');
+    } finally {
+      setWatchingAd(false);
+    }
+  };
+
   const handleSignOut = async () => {
     await signOut();
     navigate('/auth');
   };
 
-  if (!user) {
-    return null;
+  if (loading || !user) {
+    return (
+      <div className="min-h-screen bg-background pb-20">
+        <Header />
+        <main className="max-w-lg mx-auto px-4 py-4 space-y-4">
+          <Card className="bg-gradient-card border-border/50">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              </div>
+            </CardContent>
+          </Card>
+        </main>
+        <BottomNav />
+      </div>
+    );
   }
 
   if (!profile) {
@@ -201,6 +239,37 @@ export default function Profile() {
             </CardContent>
           </Card>
         )}
+
+        {/* Watch Ad for XP */}
+        <Card className="bg-gradient-card border-primary/30 overflow-hidden">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                  <Gift className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-semibold">Earn Bonus XP</h3>
+                  <p className="text-sm text-muted-foreground">Watch a video ad to earn +25 XP</p>
+                </div>
+              </div>
+              <Button 
+                onClick={handleWatchAd}
+                disabled={watchingAd}
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
+              >
+                {watchingAd ? (
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground" />
+                ) : (
+                  <>
+                    <Play className="w-4 h-4 mr-1" />
+                    Watch
+                  </>
+                )}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Actions */}
         <div className="space-y-2">
