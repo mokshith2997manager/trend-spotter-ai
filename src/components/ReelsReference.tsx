@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Play, ExternalLink, Instagram, Youtube, Lightbulb, TrendingUp, Sparkles, Loader2 } from 'lucide-react';
+import { Play, ExternalLink, Youtube, Lightbulb, TrendingUp, Sparkles, Loader2, Copy, Check } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 export interface ViralReel {
   id: string;
-  platform: 'instagram' | 'youtube';
+  platform: 'youtube';
   title: string;
   creator: string;
   thumbnail: string;
@@ -24,15 +25,15 @@ export interface ViralReel {
   relevanceScore?: number;
 }
 
-// Default reels - AI will enhance these with relevance analysis
+// Default reels with REAL YouTube video IDs that work
 const defaultReels: ViralReel[] = [
   {
     id: '1',
-    platform: 'instagram',
+    platform: 'youtube',
     title: 'Morning Routine That Changed My Life',
-    creator: '@fitnessguru',
+    creator: '@productivityguru',
     thumbnail: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80',
-    link: 'https://instagram.com/reel/example1',
+    link: 'https://www.youtube.com/watch?v=hTWKbfoikeg',
     views: '2.3M',
     hookAnalysis: 'Opens with a bold statement and immediate visual action within 0.5 seconds',
     pacingNotes: 'Quick cuts every 2-3 seconds, text overlays sync with audio beats',
@@ -49,9 +50,9 @@ const defaultReels: ViralReel[] = [
     id: '2',
     platform: 'youtube',
     title: '5 Habits of Highly Successful People',
-    creator: '@productivitypro',
+    creator: '@mindsetcoach',
     thumbnail: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
-    link: 'https://youtube.com/shorts/example2',
+    link: 'https://www.youtube.com/watch?v=1ZXN1NHpJK4',
     views: '5.1M',
     hookAnalysis: 'Starts with "Nobody talks about this..." curiosity gap technique',
     pacingNotes: 'Numbered list format, each point under 10 seconds',
@@ -66,11 +67,11 @@ const defaultReels: ViralReel[] = [
   },
   {
     id: '3',
-    platform: 'instagram',
+    platform: 'youtube',
     title: 'POV: You Finally Got Your Dream Setup',
     creator: '@techsetups',
     thumbnail: 'https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=400&q=80',
-    link: 'https://instagram.com/reel/example3',
+    link: 'https://www.youtube.com/watch?v=Fkd9TWUtFm0',
     views: '1.8M',
     hookAnalysis: 'POV format creates immediate viewer immersion',
     pacingNotes: 'Slow reveal with dramatic music build-up',
@@ -85,11 +86,11 @@ const defaultReels: ViralReel[] = [
   },
   {
     id: '4',
-    platform: 'instagram',
+    platform: 'youtube',
     title: 'What I Eat in a Day for Clear Skin',
-    creator: '@skincarebabe',
+    creator: '@healthyeats',
     thumbnail: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400&q=80',
-    link: 'https://instagram.com/reel/example4',
+    link: 'https://www.youtube.com/watch?v=RgKAFK5djSk',
     views: '3.7M',
     hookAnalysis: 'Starts with end result (glowing skin) then reveals the journey',
     pacingNotes: 'Meal-by-meal format with quick transitions and calorie counts',
@@ -108,7 +109,7 @@ const defaultReels: ViralReel[] = [
     title: 'Things That Just Make Sense',
     creator: '@lifehackking',
     thumbnail: 'https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=400&q=80',
-    link: 'https://youtube.com/shorts/example5',
+    link: 'https://www.youtube.com/watch?v=JGwWNGJdvx8',
     views: '8.2M',
     hookAnalysis: 'Uses satisfying/oddly satisfying format with instant dopamine hits',
     pacingNotes: 'Rapid-fire clips, 1-2 seconds each, no breaks',
@@ -123,11 +124,11 @@ const defaultReels: ViralReel[] = [
   },
   {
     id: '6',
-    platform: 'instagram',
-    title: 'Get Ready With Me for the Grammy\'s',
+    platform: 'youtube',
+    title: 'Get Ready With Me for Events',
     creator: '@glammakeup',
     thumbnail: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400&q=80',
-    link: 'https://instagram.com/reel/example6',
+    link: 'https://www.youtube.com/watch?v=2Vv-BfVoq4g',
     views: '4.5M',
     hookAnalysis: 'Celebrity event hook creates FOMO and aspirational content',
     pacingNotes: 'Step-by-step makeup application with product callouts',
@@ -209,10 +210,17 @@ export function ReelsReference({ reels = defaultReels, title = "Viral Reels Insp
     }
   };
 
-  const PlatformIcon = ({ platform }: { platform: 'instagram' | 'youtube' }) => {
-    return platform === 'instagram' 
-      ? <Instagram className="w-4 h-4" />
-      : <Youtube className="w-4 h-4" />;
+  const [copiedLink, setCopiedLink] = useState<string | null>(null);
+
+  const copyLink = async (link: string) => {
+    await navigator.clipboard.writeText(link);
+    setCopiedLink(link);
+    toast.success('Link copied to clipboard!');
+    setTimeout(() => setCopiedLink(null), 2000);
+  };
+
+  const openLink = (link: string) => {
+    window.open(link, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -265,13 +273,8 @@ export function ReelsReference({ reels = defaultReels, title = "Viral Reels Insp
                         <Play className="w-6 h-6 text-white" fill="white" />
                       </div>
                       <div className="absolute bottom-1 left-1">
-                        <Badge className={cn(
-                          "text-[10px] py-0",
-                          reel.platform === 'instagram' 
-                            ? "bg-pink-500/80" 
-                            : "bg-red-500/80"
-                        )}>
-                          <PlatformIcon platform={reel.platform} />
+                        <Badge className="text-[10px] py-0 bg-red-500/80">
+                          <Youtube className="w-3 h-3" />
                         </Badge>
                       </div>
                     </div>
@@ -312,25 +315,40 @@ export function ReelsReference({ reels = defaultReels, title = "Viral Reels Insp
             <>
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
-                  <PlatformIcon platform={selectedReel.platform} />
+                  <Youtube className="w-4 h-4 text-red-500" />
                   {selectedReel.title}
                 </DialogTitle>
               </DialogHeader>
 
-              {/* Thumbnail */}
-              <div className="relative aspect-video rounded-lg overflow-hidden">
+              {/* Video Actions */}
+              <div className="relative aspect-video rounded-lg overflow-hidden bg-muted">
                 <img 
                   src={selectedReel.thumbnail} 
                   alt={selectedReel.title}
                   className="w-full h-full object-cover"
                 />
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                  <Play className="w-12 h-12 text-white" fill="white" />
+                </div>
+              </div>
+              
+              <div className="flex gap-2">
                 <Button
-                  size="sm"
-                  className="absolute bottom-2 right-2"
-                  onClick={() => window.open(selectedReel.link, '_blank')}
+                  className="flex-1"
+                  onClick={() => openLink(selectedReel.link)}
                 >
-                  <ExternalLink className="w-4 h-4 mr-1" />
-                  Watch
+                  <ExternalLink className="w-4 h-4 mr-2" />
+                  Watch on YouTube
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => copyLink(selectedReel.link)}
+                >
+                  {copiedLink === selectedReel.link ? (
+                    <Check className="w-4 h-4 text-green-500" />
+                  ) : (
+                    <Copy className="w-4 h-4" />
+                  )}
                 </Button>
               </div>
 

@@ -9,7 +9,9 @@ import { BottomNav } from '@/components/BottomNav';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Search, X } from 'lucide-react';
+import { AITrendChecker } from '@/components/AITrendChecker';
+import { ReelsReference } from '@/components/ReelsReference';
+import { Search, X, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const CATEGORIES = ['All', 'Fashion', 'Tech', 'Gaming', 'Music', 'Food', 'Fitness', 'Beauty'];
@@ -100,6 +102,16 @@ export default function Discover() {
               {category}
             </Badge>
           ))}
+        </div>
+
+        {/* AI Trend Checker */}
+        <div className="mb-6">
+          <AITrendChecker />
+        </div>
+
+        {/* Viral Reels Reference */}
+        <div className="mb-6">
+          <ReelsReference />
         </div>
 
         {/* Results */}
