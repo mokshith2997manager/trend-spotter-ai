@@ -109,7 +109,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'https://preview--hype-lens-pulse.lovable.app/auth'
+        redirectTo: `${window.location.origin}/`
       }
     });
     return { error: error as Error | null };
