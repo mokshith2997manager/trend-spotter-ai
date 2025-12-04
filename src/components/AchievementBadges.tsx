@@ -139,6 +139,13 @@ export function AchievementBadges() {
   });
   const [earnedBadges, setEarnedBadges] = useState<string[]>([]);
 
+  // Initialize earned badges from profile immediately
+  useEffect(() => {
+    if (profile?.badges) {
+      setEarnedBadges(profile.badges);
+    }
+  }, [profile?.badges]);
+
   useEffect(() => {
     if (user && profile) {
       fetchStats();

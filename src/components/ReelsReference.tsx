@@ -257,13 +257,15 @@ export function ReelsReference({ reels = defaultReels, title = "Viral Reels Insp
               transition={{ delay: index * 0.1 }}
             >
               <Card 
-                className="bg-card/50 border-border/50 cursor-pointer hover:border-primary/50 transition-all"
-                onClick={() => setSelectedReel(reel)}
+                className="bg-card/50 border-border/50 hover:border-primary/50 transition-all"
               >
                 <CardContent className="p-3">
                   <div className="flex gap-3">
                     {/* Thumbnail */}
-                    <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
+                    <div 
+                      className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 cursor-pointer"
+                      onClick={() => setSelectedReel(reel)}
+                    >
                       <img 
                         src={reel.thumbnail} 
                         alt={reel.title}
@@ -284,24 +286,59 @@ export function ReelsReference({ reels = defaultReels, title = "Viral Reels Insp
 
                     {/* Info */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between">
-                        <h4 className="font-semibold text-sm line-clamp-2 mb-1">
-                          {reel.title}
-                        </h4>
-                        {reel.relevanceScore && (
-                          <Badge className="ml-2 bg-primary/20 text-primary text-[10px]">
-                            {reel.relevanceScore}%
+                      <div 
+                        className="cursor-pointer"
+                        onClick={() => setSelectedReel(reel)}
+                      >
+                        <div className="flex items-start justify-between">
+                          <h4 className="font-semibold text-sm line-clamp-2 mb-1">
+                            {reel.title}
+                          </h4>
+                          {reel.relevanceScore && (
+                            <Badge className="ml-2 bg-primary/20 text-primary text-[10px]">
+                              {reel.relevanceScore}%
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-xs text-muted-foreground mb-2">
+                          {reel.creator}
+                        </p>
+                      </div>
+                      
+                      {/* Action Buttons - Always Visible */}
+                      <div className="flex items-center gap-2 mt-2">
+                        <Button
+                          size="sm"
+                          className="h-7 px-3 bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-medium"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openLink(reel.link);
+                          }}
+                        >
+                          <ExternalLink className="w-3 h-3 mr-1" />
+                          Watch
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-7 px-2 border-border hover:bg-muted"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            copyLink(reel.link);
+                          }}
+                        >
+                          {copiedLink === reel.link ? (
+                            <Check className="w-3 h-3 text-green-500" />
+                          ) : (
+                            <Copy className="w-3 h-3" />
+                          )}
+                        </Button>
+                        {reel.views && (
+                          <Badge variant="outline" className="text-[10px] ml-auto">
+                            {reel.views}
                           </Badge>
                         )}
                       </div>
-                      <p className="text-xs text-muted-foreground mb-2">
-                        {reel.creator}
-                      </p>
-                      {reel.views && (
-                        <Badge variant="outline" className="text-[10px]">
-                          {reel.views} views
-                        </Badge>
-                      )}
                     </div>
                   </div>
                 </CardContent>
