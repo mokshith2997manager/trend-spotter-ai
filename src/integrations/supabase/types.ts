@@ -90,6 +90,9 @@ export type Database = {
           interests: string[] | null
           last_active_at: string
           last_daily_reward_at: string | null
+          notifications_enabled: boolean | null
+          notify_daily_rewards: boolean | null
+          notify_trending: boolean | null
           xp: number
         }
         Insert: {
@@ -103,6 +106,9 @@ export type Database = {
           interests?: string[] | null
           last_active_at?: string
           last_daily_reward_at?: string | null
+          notifications_enabled?: boolean | null
+          notify_daily_rewards?: boolean | null
+          notify_trending?: boolean | null
           xp?: number
         }
         Update: {
@@ -116,7 +122,37 @@ export type Database = {
           interests?: string[] | null
           last_active_at?: string
           last_daily_reward_at?: string | null
+          notifications_enabled?: boolean | null
+          notify_daily_rewards?: boolean | null
+          notify_trending?: boolean | null
           xp?: number
+        }
+        Relationships: []
+      }
+      push_subscriptions: {
+        Row: {
+          auth: string
+          created_at: string
+          endpoint: string
+          id: string
+          p256dh: string
+          user_id: string
+        }
+        Insert: {
+          auth: string
+          created_at?: string
+          endpoint: string
+          id?: string
+          p256dh: string
+          user_id: string
+        }
+        Update: {
+          auth?: string
+          created_at?: string
+          endpoint?: string
+          id?: string
+          p256dh?: string
+          user_id?: string
         }
         Relationships: []
       }

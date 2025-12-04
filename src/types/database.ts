@@ -10,6 +10,9 @@ export interface Profile {
   avatar_url: string | null;
   created_at: string;
   last_active_at: string;
+  notifications_enabled: boolean;
+  notify_daily_rewards: boolean;
+  notify_trending: boolean;
 }
 
 export interface Trend {

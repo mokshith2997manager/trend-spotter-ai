@@ -7,6 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { ProfileEditDialog } from '@/components/ProfileEditDialog';
+import { AchievementBadges } from '@/components/AchievementBadges';
+import { NotificationSettings } from '@/components/NotificationSettings';
 import { 
   LogOut, 
   Settings, 
@@ -16,7 +19,8 @@ import {
   Calendar,
   Star,
   Play,
-  Gift
+  Gift,
+  Edit
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
@@ -270,6 +274,9 @@ export default function Profile() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Notification Settings */}
+        <NotificationSettings />
 
         {/* Actions */}
         <div className="space-y-2">
