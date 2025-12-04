@@ -27,11 +27,11 @@ const getTrendReels = (trendTitle: string): ViralReel[] => {
   const baseReels: ViralReel[] = [
     {
       id: `${trendTitle}-1`,
-      platform: 'youtube',
+      platform: 'instagram',
       title: `How I Went Viral with ${trendTitle.slice(0, 20)}...`,
       creator: '@contentcreator',
       thumbnail: 'https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=400&q=80',
-      link: 'https://www.youtube.com/watch?v=hTWKbfoikeg',
+      link: 'https://www.instagram.com/reels/',
       views: '1.2M',
       hookAnalysis: 'Strong pattern interrupt in first second with unexpected visual',
       pacingNotes: 'Fast cuts synced to trending audio, builds to satisfying conclusion',
@@ -50,7 +50,7 @@ const getTrendReels = (trendTitle: string): ViralReel[] => {
       title: `${trendTitle} - The TRUTH`,
       creator: '@viralguru',
       thumbnail: 'https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=400&q=80',
-      link: 'https://www.youtube.com/watch?v=JGwWNGJdvx8',
+      link: 'https://www.youtube.com/shorts',
       views: '3.5M',
       hookAnalysis: 'Opens with bold claim that creates curiosity gap',
       pacingNotes: 'Builds tension with quick reveals, uses text overlays for emphasis',

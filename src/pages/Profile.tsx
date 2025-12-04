@@ -24,7 +24,6 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { ProfileEditDialog } from '@/components/ProfileEditDialog';
 
 export default function Profile() {
   const { user, profile, loading, signOut, addXP } = useAuth();
@@ -311,14 +310,6 @@ export default function Profile() {
       </main>
 
       <ProfileEditDialog open={editOpen} onOpenChange={setEditOpen} />
-      <BottomNav />
-    </div>
-  );
-}
-          </Button>
-        </div>
-      </main>
-
       <BottomNav />
     </div>
   );
