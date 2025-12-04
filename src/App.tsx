@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
+import { NotificationManager } from "@/components/NotificationManager";
 
 // Pages
 import Landing from "./pages/Landing";
@@ -83,6 +84,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
+          <NotificationManager />
           <AppRoutes />
         </AuthProvider>
       </BrowserRouter>
