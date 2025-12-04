@@ -24,12 +24,14 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { ProfileEditDialog } from '@/components/ProfileEditDialog';
 
 export default function Profile() {
   const { user, profile, loading, signOut, addXP } = useAuth();
   const navigate = useNavigate();
   const [stats, setStats] = useState({ bets: 0, bookmarks: 0 });
   const [watchingAd, setWatchingAd] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -146,12 +148,20 @@ export default function Profile() {
         <Card className="bg-gradient-card border-border/50">
           <CardContent className="p-6">
             <div className="flex items-start gap-4">
-              <Avatar className="w-20 h-20 border-4 border-primary/20">
-                <AvatarImage src={profile.avatar_url || undefined} />
-                <AvatarFallback className="text-2xl bg-muted">
-                  {getInitials(profile.display_name)}
-                </AvatarFallback>
+              <div className="relative">
+                <Avatar className="w-20 h-20 border-4 border-primary/20">
+                  <AvatarImage src={profile.avatar_url || undefined} />
+                  <AvatarFallback className="text-2xl bg-muted">
+                    {getInitials(profile.display_name)}
+                  </AvatarFallback>
               </Avatar>
+              <button 
+                onClick={() => setEditOpen(true)}
+                className="absolute -bottom-1 -right-1 w-8 h-8 bg-primary rounded-full flex items-center justify-center"
+              >
+                <Edit className="w-4 h-4 text-primary-foreground" />
+              </button>
+            </div>
               
               <div className="flex-1">
                 <h2 className="text-xl font-bold">
@@ -296,6 +306,15 @@ export default function Profile() {
           >
             <LogOut className="w-4 h-4 mr-2" />
             Sign Out
+          </Button>
+        </div>
+      </main>
+
+      <ProfileEditDialog open={editOpen} onOpenChange={setEditOpen} />
+      <BottomNav />
+    </div>
+  );
+}
           </Button>
         </div>
       </main>
