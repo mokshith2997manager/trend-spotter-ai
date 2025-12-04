@@ -8,6 +8,7 @@ import { Header } from '@/components/Header';
 import { BottomNav } from '@/components/BottomNav';
 import { HomeCarousel } from '@/components/HomeCarousel';
 import { HypeScoreCard } from '@/components/HypeScoreCard';
+import { DailyReward } from '@/components/DailyReward';
 import { FloatingActionButton } from '@/components/FloatingActionButton';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -129,6 +130,9 @@ export default function Home() {
           engagement={Math.min(100, 70 + Math.floor((profile?.xp || 0) / 15))}
           creativity={Math.min(100, 55 + Math.floor((profile?.xp || 0) / 25))}
         />
+
+        {/* Daily Reward */}
+        <DailyReward />
 
         {/* Filter buttons */}
         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">

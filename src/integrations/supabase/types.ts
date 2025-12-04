@@ -83,33 +83,39 @@ export type Database = {
           avatar_url: string | null
           badges: string[] | null
           created_at: string
+          daily_streak: number | null
           display_name: string | null
           email: string | null
           id: string
           interests: string[] | null
           last_active_at: string
+          last_daily_reward_at: string | null
           xp: number
         }
         Insert: {
           avatar_url?: string | null
           badges?: string[] | null
           created_at?: string
+          daily_streak?: number | null
           display_name?: string | null
           email?: string | null
           id: string
           interests?: string[] | null
           last_active_at?: string
+          last_daily_reward_at?: string | null
           xp?: number
         }
         Update: {
           avatar_url?: string | null
           badges?: string[] | null
           created_at?: string
+          daily_streak?: number | null
           display_name?: string | null
           email?: string | null
           id?: string
           interests?: string[] | null
           last_active_at?: string
+          last_daily_reward_at?: string | null
           xp?: number
         }
         Relationships: []
