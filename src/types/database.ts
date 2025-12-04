@@ -1,4 +1,6 @@
 export interface Profile {
+  last_daily_reward_at: string | null;
+  daily_streak: number;
   id: string;
   display_name: string | null;
   email: string | null;
